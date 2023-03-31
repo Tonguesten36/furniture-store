@@ -65,28 +65,33 @@ class fun2:
             db_connection = sqlite3.connect("store.db")
             db_cursor = db_connection.cursor()
 
-            # Search for the row with self.ID
-            search_item_query = f"SELECT * FROM inventory WHERE id={self.ID};"
-            db_cursor.execute(search_item_query)
+            try:
+                # Search for the row with self.ID
+                search_item_query = f"SELECT * FROM inventory WHERE id={self.ID};"
+                db_cursor.execute(search_item_query)
 
-            # Display search result
-            # Here, fetchone() is used to gather data of the row found afer execute the SQLite command in search_item_query
-            item_data = db_cursor.fetchone()
-            if item_data == None:
-                # if the item is not in inventory
-                # tell the user that the item does not exist in the database
+                # Display search result
+                # Here, fetchone() is used to gather data of the row found afer execute the SQLite command in search_item_query
+                item_data = db_cursor.fetchone()
+                if item_data == None:
+                    # if the item is not in inventory
+                    # tell the user that the item does not exist in the database
+                    tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.ID}")
+                else:
+                    # if the item is found in inventory
+                    # display each column in the row
+                    tkinter.messagebox.showinfo("Success",
+                        f"ID: {item_data[0]}\n"\
+                        f"Name: {item_data[1]}\n"\
+                        f"Import Date: {item_data[2]}\n"\
+                        f"Category: {item_data[3]}\n"\
+                        f"Import Price: {item_data[4]}\n"\
+                        f"Export Price: {item_data[5]}\n"\
+                        f"Quantity: {item_data[6]}")
+            except sqlite3.OperationalError: # This except block will occur if the entry field is not an integer
                 tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.ID}")
-            else:
-                # if the item is found in inventory
-                # display each column in the row
-                tkinter.messagebox.showinfo("Success",
-                    f"ID: {item_data[0]}\n"\
-                    f"Name: {item_data[1]}\n"\
-                    f"Import Date: {item_data[2]}\n"\
-                    f"Category: {item_data[3]}\n"\
-                    f"Import Price: {item_data[4]}\n"\
-                    f"Export Price: {item_data[5]}\n"\
-                    f"Quantity: {item_data[6]}")
+            finally:                
+                self.entry.delete(0, END)
             
             # Close the connection
             db_cursor.close()

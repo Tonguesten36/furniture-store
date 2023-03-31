@@ -90,7 +90,6 @@ class fun2:
                         f"Quantity: {item_data[6]}")
             except sqlite3.OperationalError: # This except block will occur if the entry field is not an integer
                 tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.ID}")
-            finally:                
                 self.entry.delete(0, END)
             
             # Close the connection

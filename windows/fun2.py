@@ -75,7 +75,7 @@ class fun2:
                 item_data = db_cursor.fetchone()
                 if item_data == None:
                     # if the item is not in inventory
-                    # tell the user that the item does not exist in the database
+                    # tell the user that the item does not exist in the table
                     tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
                 else:
                     # if the item is found in inventory

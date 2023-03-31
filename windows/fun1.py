@@ -72,7 +72,7 @@ class fun1:
             db_connection = sqlite3.connect("store.db")
             db_cursor = db_connection.cursor()
 
-            # Insert the new item into the database
+            # Insert the new item into the table inventory
             insert_item_query = "INSERT INTO inventory (id, name, buy_date, category, buy_price, sell_price, stock) VALUES (?,?,?,?,?,?,?);"
             db_cursor.execute(insert_item_query, (self.furniture_id, self.furniture_name, self.furniture_import_date, self.furniture_category, self.furniture_import_price, self.furniture_export_price, self.furniture_quantity))
             db_connection.commit()

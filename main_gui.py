@@ -31,9 +31,9 @@ class FurnitureStore:
         self.ButtonFunc3.pack(side=TOP, fill = BOTH, padx=10 ,pady= 50)
 
         #frame left end here
-    
         self.activeFrame = Frame(self.master, bg="white", height=800, width=1040) 
         self.activeFrame.pack(side=TOP, fill = Y)
+        
         image2 = "background.jpg"
         image2_names = os.path.join(pathlib.Path(__file__).parent.absolute(), image2)
         self.image2 = Image.open(image2_names)

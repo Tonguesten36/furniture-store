@@ -1,12 +1,17 @@
 from tkinter import *
 from tkcalendar import DateEntry
 import tkinter.messagebox
+import sqlite3
+
+# Insert an item into the database
 class fun1:
     def __init__(self, master):
         self.master = master
         self.header = Label(self.master, text="Import furniture", bg="white", fg="black", font=("Times New Roman", 20))
         self.header.pack(side=TOP, fill = BOTH)
         self.fun1_gui()
+    
+    # GUI function
     def fun1_gui(self):
         self.activeFrame = Frame(self.master, bg="", height=800, width=2000) 
         self.activeFrame.pack(side=TOP, fill = BOTH)
@@ -32,7 +37,7 @@ class fun1:
         # Entry boxes for the main frame
         self.entry1 = Entry(self.mainFrame, width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry1.place(x=320, y=50)
-        self.entry2 = DateEntry(self.mainFrame, width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
+        self.entry2 = DateEntry(self.mainFrame, date_pattern= 'yyyy/MM/dd', width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry2.place(x=320, y=120)
         self.entry3 = Entry(self.mainFrame, width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry3.place(x=320, y=190)
@@ -49,8 +54,9 @@ class fun1:
         self.addButton = Button(self.mainFrame, text="Import to Inventory", bg="white", fg="black", font=("Times New Roman", 20), borderwidth=2, relief="groove", command= self.get_infos)
         self.addButton.place(x=250, y=535)
     
-
+    # Get info
     def get_infos(self, *args, **kwargs):
+        # Get these data from the entries
         self.furniture_id = self.entry1.get()
         self.furniture_import_date = self.entry2.get()
         self.furniture_name = self.entry3.get()
@@ -58,11 +64,22 @@ class fun1:
         self.furniture_export_price = self.entry5.get()
         self.furniture_quantity = self.entry6.get()
         self.furniture_category = self.entry7.get()
+
         if self.furniture_id == "" or self.furniture_name == "" or self.furniture_category == "" or self.furniture_import_price == "" or self.furniture_export_price == "" or self.furniture_quantity == "" or self.furniture_import_date == "":
             tkinter.messagebox.showerror("Error", "Please fill all the fields!")
         else:
-            # add furniture to the database
-            
+            # Initialize connection to the database
+            db_connection = sqlite3.connect("store.db")
+            db_cursor = db_connection.cursor()
+
+            # Insert the new item into the database
+            insert_item_query = "INSERT INTO inventory (id, name, buy_date, category, buy_price, sell_price, stock) VALUES (?,?,?,?,?,?,?);"
+            db_cursor.execute(insert_item_query, (self.furniture_id, self.furniture_name, self.furniture_import_date, self.furniture_category, self.furniture_import_price, self.furniture_export_price, self.furniture_quantity))
+            db_connection.commit()
+
+            # Close the connection
+            db_cursor.close()
+
             #messagebox to show success
             tkinter.messagebox.showinfo("Success", "Furniture imported successfully!")
             self.entry1.delete(0, END)

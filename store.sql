@@ -1,3 +1,6 @@
+-- This is a MySQL file
+-- It is only serve to be a reference to the table inventory
+
 CREATE DATABASE IF NOT EXISTS  furnitures;
 USE furnitures;
 

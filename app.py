@@ -8,9 +8,10 @@ class GUI(Tk):
         self.width = self.winfo_screenwidth()
         self.height = self.winfo_screenheight()
         self.geometry("{width}x{height}+0+0".format(width=self.width, height=self.height))
-        self.state("zoomed")
+        self.state("normal")
         main_gui.FurnitureStore(self)
 
+# Driver code
 if __name__ == "__main__":
     g=GUI()
     g.mainloop()

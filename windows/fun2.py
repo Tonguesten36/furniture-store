@@ -58,7 +58,7 @@ class fun2:
     #Search for a specific item
     def search_ID(self, *args,**kwargs):
         self.furniture_ID= self.entry.get()
-        if self.ID == "":
+        if self.furnitire_ID == "":
             tkinter.messagebox.showerror("Error", "Please input furniture ID")
         else:
             # Initialize connection to the database

@@ -58,7 +58,7 @@ class fun2:
     #Search for a specific item
     def search_ID(self, *args,**kwargs):
         self.furniture_ID= self.entry.get()
-        if self.furnitire_ID == "":
+        if self.furniture_ID == "":
             tkinter.messagebox.showerror("Error", "Please input furniture ID")
         else:
             # Initialize connection to the database
@@ -67,7 +67,7 @@ class fun2:
 
             try:
                 # Search for the row with self.ID
-                search_item_query = f"SELECT * FROM inventory WHERE id={self.ID};"
+                search_item_query = f"SELECT * FROM inventory WHERE id={self.furniture_ID};"
                 db_cursor.execute(search_item_query)
 
                 # Display search result

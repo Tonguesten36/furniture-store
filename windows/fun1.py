@@ -37,7 +37,7 @@ class fun1:
         # Entry boxes for the main frame
         self.entry1 = Entry(self.mainFrame, width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry1.place(x=320, y=50)
-        self.entry2 = DateEntry(self.mainFrame, date_pattern= 'yyyy/MM/dd', width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
+        self.entry2 = DateEntry(self.mainFrame, date_pattern= 'yyyy-MM-dd', width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry2.place(x=320, y=120)
         self.entry3 = Entry(self.mainFrame, width=30, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry3.place(x=320, y=190)

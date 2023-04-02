@@ -77,7 +77,7 @@ class fun3:
                 except sqlite3.OperationalError: # This except block will occur if the entry field ID is not an integer
                     tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
                 else: # If nothing goes wrong then execut this code block
-                    if self.furniture_amount > 0:
+                    if int(self.furniture_amount) > 0:
                         # Here, fetchone() is used to gather data of the row found afer execute the SQLite command in search_item_query
                         item_data = db_cursor.fetchone()
                         if item_data != None: # If the item is found in inventory, do the following...
@@ -89,7 +89,7 @@ class fun3:
                                 self.item_index += 1
 
                                 # Add the item into the treeview according to the item_index and the 'cart'
-                                self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], self.furniture_amount, item_data[3]))
+                                self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], int(self.furniture_amount), item_data[3]))
                                 self.cart.append(new_item_dict)
                                 
                                 # Let the user know that the item is added into the 'cart'
@@ -108,7 +108,7 @@ class fun3:
                                     # Check if the user type in a new furniture ID
                                     if item_id != int(self.furniture_ID):
                                         # Check if the user's request can be satisfied with the current stock of a specific item
-                                        if self.furniture_amount <= item_current_stock[0]:
+                                        if int(self.furniture_amount) <= item_current_stock[0]:
                                             # Create a new dictionary and increment the item_index by 1
                                             new_item_dict = {}
                                             new_item_dict.update({"id":item_data[0], "buy_quantity":int(self.furniture_amount), "export_price":item_data[4], "item_index":self.item_index})

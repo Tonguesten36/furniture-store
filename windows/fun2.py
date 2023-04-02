@@ -76,7 +76,7 @@ class fun2:
                 if item_data == None:
                     # if the item is not in inventory
                     # tell the user that the item does not exist in the table
-                    tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
+                    tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
                 else:
                     # if the item is found in inventory
                     # display each column in the row
@@ -89,7 +89,7 @@ class fun2:
                         f"Export Price: {item_data[5]}\n"\
                         f"Quantity: {item_data[6]}")
             except sqlite3.OperationalError: # This except block will occur if the entry field is not an integer
-                tkinter.messagebox.showinfo("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
+                tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {self.furniture_ID}")
             finally:
                 # Close the connection
                 db_cursor.close()

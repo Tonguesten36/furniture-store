@@ -8,13 +8,13 @@ import sqlite3
 class fun2:
     def __init__(self, master):
         self.master = master
-        self.header = Label(self.master, text="Inventory", bg="white", fg="black", font=("Times New Roman", 20))
+        self.header = Label(self.master, text="INVENTORY", bg="#009966", fg="#FFFF33", font=("Times New Roman", 20))
         self.header.pack(side=TOP, fill = BOTH)
         self.fun2_gui()
     
     # GUI function
     def fun2_gui(self):
-        self.activeFrame = Frame(self.master, bg="", height=800, width=2000) 
+        self.activeFrame = Frame(self.master, bg="#009966", height=800, width=2000) 
         self.activeFrame.pack(side=TOP, fill = Y)
 
         # Treeview take information from database
@@ -41,7 +41,7 @@ class fun2:
         self.tree.configure(yscrollcommand=self.scrollbar.set)
         
         # Button for confirm searching a specific item
-        self.btn = Button(self.activeFrame, text="Search",bg="white", fg="black", font=("Times New Roman", 20), command=self.search_ID)
+        self.btn = Button(self.activeFrame, text="Search",bg="#EE0000", fg="white", font=("Times New Roman", 20), command=self.search_ID)
         self.btn.place(x=560, y=580, height=30, width=200)
         
         # Entry for searching a specific item
@@ -49,7 +49,7 @@ class fun2:
         self.entry.place(x=290, y=580, height=30, width=200)
         
         # Label
-        self.label = Label(self.activeFrame, text="Search furniture ID:",bg="white", fg="black", font=("Times New Roman", 20))
+        self.label = Label(self.activeFrame, text="Input furniture ID:",bg="#009966", fg="#FFFF33", font=("Times New Roman", 20))
         self.label.place(x=80, y=580, height=30, width=200)
         
         # List all item in the database
@@ -110,21 +110,3 @@ class fun2:
 
         # Close the connection
         db_cursor.close()
-
-    
-
-
-
-    
-
-
-
-
-
-    
-
-  
-
-        
-
-    

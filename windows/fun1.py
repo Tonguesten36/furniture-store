@@ -74,18 +74,21 @@ class fun1:
 
             # Insert the new item into the table inventory
             insert_item_query = "INSERT INTO inventory (id, name, buy_date, category, buy_price, sell_price, stock) VALUES (?,?,?,?,?,?,?);"
-            db_cursor.execute(insert_item_query, (self.furniture_id, self.furniture_name, self.furniture_import_date, self.furniture_category, self.furniture_import_price, self.furniture_export_price, self.furniture_quantity))
-            db_connection.commit()
-
-            # Close the connection
-            db_cursor.close()
-
+            try:
+                db_cursor.execute(insert_item_query, (self.furniture_id, self.furniture_name, self.furniture_import_date, self.furniture_category, self.furniture_import_price, self.furniture_export_price, self.furniture_quantity))
+            
+            except sqlite3.IntegrityError:
+                tkinter.messagebox.showerror("Error", "Furniture ID already exists!")
+            else:
             #messagebox to show success
-            tkinter.messagebox.showinfo("Success", f"Furniture imported successfully!\nTotal value: {self.furniture_quantity} * {self.furniture_import_price} = {int(self.furniture_quantity) * int(self.furniture_import_price)}")
-            self.entry1.delete(0, END)
-            self.entry2.delete(0, END)
-            self.entry3.delete(0, END)
-            self.entry4.delete(0, END)
-            self.entry5.delete(0, END)
-            self.entry6.delete(0, END)
-            self.entry7.delete(0, END)
+                tkinter.messagebox.showinfo("Success", f"Furniture imported successfully!\nTotal value: {self.furniture_quantity} * {self.furniture_import_price} = {int(self.furniture_quantity) * int(self.furniture_import_price)}")
+                db_connection.commit()
+            finally:   
+                db_cursor.close()
+                self.entry1.delete(0, END)
+                self.entry2.delete(0, END)
+                self.entry3.delete(0, END)
+                self.entry4.delete(0, END)
+                self.entry5.delete(0, END)
+                self.entry6.delete(0, END)
+                self.entry7.delete(0, END)

@@ -50,11 +50,11 @@ class fun3:
         self.tree.heading('Import price', text='Import price')
         self.tree.heading('Quantity', text='Quantity')
         self.tree.heading('Category', text='Category')
-        self.tree.place(x=22, y=160, height=370, width=700)
+        self.tree.place(x=55, y=160, height=370, width=700)
         
         # Scrollbar
         self.scrollbar = Scrollbar(self.mainFrame, orient="vertical", command=self.tree.yview)
-        self.scrollbar.place(x=900, y=40, height=500)
+        self.scrollbar.place(x=755, y=160, height=370)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
         
     # Search for an item in the inventory

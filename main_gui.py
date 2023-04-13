@@ -1,7 +1,22 @@
 from tkinter import *
+import tkinter as tk
 from PIL import ImageTk, Image
-from windows import fun1, fun2, fun3, fun4
+from windows import fun1, fun2, fun3, fun4, dashboard 
 import os, pathlib
+import sqlite3
+
+
+class Hover(tk.Button):
+    def __init__(self, master, **kw):
+        tk.Button.__init__(self, master=master, **kw)
+        self.background = self['bg']
+        self.bind("<Enter>", self.hover)
+        self.bind("<Leave>", self.leave)
+        
+    def hover(self, e):
+        self['bg'] = self['activebackground']
+    def leave(self, e):
+        self['bg'] = self.background
 
 class FurnitureStore:
     def __init__(self, master):
@@ -12,7 +27,7 @@ class FurnitureStore:
         self.frameLeft = Frame(self.master, bg="#FFCCCC", height=800, width=240)
         self.frameLeft.pack(side=LEFT, fill = Y)
         #logo
-        image = "logo1.jpg"
+        image = "./images/logo1.jpg"
         image_names = os.path.join(pathlib.Path(__file__).parent.absolute(), image)
         self.image = Image.open(image_names)
         self.image = self.image.resize((240, 200), Image.ANTIALIAS)
@@ -21,22 +36,24 @@ class FurnitureStore:
         self.logoLabel.pack(side=TOP, fill = BOTH, padx=10 ,pady= 10)
         
         #Buttons
-        self.ButtonFunc1 = Button(self.frameLeft, text="ADD NEW ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc1())
-        self.ButtonFunc1.pack(side=TOP, fill = BOTH, padx=10 ,pady= 30)
+        self.dashBoard = Hover(self.frameLeft, text="DASHBOARD", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.ButtonDB())
+        self.dashBoard.pack(side=TOP, fill = BOTH, padx=10 ,pady= 20)
+        self.ButtonFunc1 = Hover(self.frameLeft, text="ADD NEW ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc1())
+        self.ButtonFunc1.pack(side=TOP, fill = BOTH, padx=10 ,pady= 20)
 
-        self.ButtonFunc2 = Button(self.frameLeft, text="INVENTORY", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc2())
-        self.ButtonFunc2.pack(side=TOP, fill = BOTH, padx=10 ,pady= 30)
+        self.ButtonFunc2 = Hover(self.frameLeft, text="INVENTORY", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc2())
+        self.ButtonFunc2.pack(side=TOP, fill = BOTH, padx=10 ,pady= 20)
 
-        self.ButtonFunc3 = Button(self.frameLeft, text="IMPORT ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc3())
-        self.ButtonFunc3.pack(side=TOP, fill = BOTH, padx=10 ,pady= 30)
+        self.ButtonFunc3 = Hover(self.frameLeft, text="IMPORT ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc3())
+        self.ButtonFunc3.pack(side=TOP, fill = BOTH, padx=10 ,pady= 20)
 
-        self.ButtonFunc4 = Button(self.frameLeft, text="EXPORT ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc4())
-        self.ButtonFunc4.pack(side=TOP, fill = BOTH, padx=10 ,pady= 30)
+        self.ButtonFunc4 = Hover(self.frameLeft, text="EXPORT ITEM", bg="#FFCCCC", borderwidth=0, fg="black", font=("Nunito", 20), command= lambda: self.buttonFunc4())
+        self.ButtonFunc4.pack(side=TOP, fill = BOTH, padx=10 ,pady= 20)
 
         #frame left end here
         self.activeFrame = Frame(self.master, bg="white", height=800, width=1040) 
         self.activeFrame.pack(side=TOP, fill = Y)
-        image2 = "background.jpg"
+        image2 = "./images/background.jpg"
         image2_names = os.path.join(pathlib.Path(__file__).parent.absolute(), image2)
         self.image2 = Image.open(image2_names)
         self.image2 = self.image2.resize((1018, 740), Image.ANTIALIAS)
@@ -47,6 +64,12 @@ class FurnitureStore:
 
     
     # frame change function
+    def ButtonDB(self):
+        self.activeFrame.destroy()
+        self.activeFrame = Frame(self.master, bg="white", height=800, width=1040) 
+        self.activeFrame.pack(side=TOP, fill = Y)
+        dashboard.dashboard(self.activeFrame)
+
     def buttonFunc1(self):
         self.activeFrame.destroy()
         self.activeFrame = Frame(self.master, bg="white", height=800, width=1040) 

@@ -3,12 +3,13 @@ import tkinter.messagebox
 import tkinter.ttk
 import sqlite3
 
+# Import furniture
 class fun3:
     def __init__(self, master):
         self.master = master
         self.header = Label(self.master, text="IMPORT FURNITURE", bg="#009966", fg="#FFFF33", font=("Times New Roman", 20))
         self.header.pack(side=TOP, fill = BOTH)
-        self.cart = [] # Stores the ID of item's you want to sell and how many of that item to sell (together as a dict,, add in the "item_index" key as well)
+        self.cart = [] # Stores the ID of item's you want to import and how many of that item to import (together as a dict,, add in the "item_index" key as well)
         self.item_index = 0 # The position of an item on the treeview, unique for each new item in the treeview
         self.fun3_gui()
 
@@ -79,9 +80,11 @@ class fun3:
                     if int(self.furniture_amount) > 0:
                         # Here, fetchone() is used to gather data of the row found after execute the SQLite command in search_item_query
                         item_data = db_cursor.fetchone()
+
                          # Get the item's current stock in the inventory...
                         get_item_stock_query = f"SELECT stock FROM inventory WHERE id={int(self.furniture_ID)};"
                         item_current_stock = db_cursor.execute(get_item_stock_query).fetchone()
+
                         # ...and the item's name as well
                         get_item_name_query = f"SELECT name FROM inventory WHERE id={int(self.furniture_ID)}"
                         item_name = db_cursor.execute(get_item_name_query).fetchone()
@@ -91,7 +94,7 @@ class fun3:
                             if len(self.cart) == 0:                
                                 # Create a new dictionary and increment the item_index by 1
                                 new_item_dict = {}
-                                new_item_dict.update({"id":item_data[0], "sell_quantity":int(self.furniture_amount), "import_price":item_data[4],"item_index":self.item_index})
+                                new_item_dict.update({"id":item_data[0], "import_quantity":int(self.furniture_amount), "import_price":item_data[4],"item_index":self.item_index})
                                 self.item_index += 1
 
                                 # Add the item into the treeview according to the item_index and the 'cart'
@@ -109,7 +112,7 @@ class fun3:
                                     if item_id != int(self.furniture_ID):
                                         # Create a new dictionary and increment the item_index by 1
                                         new_item_dict = {}
-                                        new_item_dict.update({"id":item_data[0], "buy_quantity":int(self.furniture_amount), "export_price":item_data[4], "item_index":self.item_index})
+                                        new_item_dict.update({"id":item_data[0], "import_quantity":int(self.furniture_amount), "import_price":item_data[4], "item_index":self.item_index})
                                         self.item_index += 1
 
                                         # Add the item into the treeview according to the item_index and the 'cart'
@@ -122,14 +125,14 @@ class fun3:
 
                                     else: # And if they type in an ID from one of the items in the 'cart'...
                                         # Calculate the new amount of that item the user wanted to buy
-                                        current_buy_quantity = furniture.get("buy_quantity")
-                                        new_buy_quantity = current_buy_quantity + int(self.furniture_amount)
+                                        current_import_quantity = furniture.get("import_quantity")                                        
+                                        new_import_quantity = current_import_quantity + int(self.furniture_amount)
 
                                         # Then the item in the treeview should be updated with the new buy_quantity value,
                                         # assuming that the new_buy_quantity <= item's current stock in inventory     
                                         x = self.tree.get_children()
-                                        self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_buy_quantity, item_data[3]))
-                                        furniture.update({"buy_quantity":new_buy_quantity})
+                                        self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_import_quantity, item_data[3]))
+                                        furniture.update({"import_quantity":new_import_quantity})
                                         break
                                         
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
@@ -165,16 +168,16 @@ class fun3:
                 # Execute the SQL command and fetch the data from the cursor
                 current_item_stock = db_cursor.execute(get_item_stock_query).fetchone()
 
-                # How many of that item does the user want to buy ?
-                item_buy_quantity = int(item.get("sell_quantity")) 
-                # What is the export price of that item individually?
-                item_import_price = int(item.get("import_price")) 
+                # How many of that item does the user want to import?
+                item_import_quantity = item.get("import_quantity")
+                # What is the import price of that item individually?
+                item_import_price = item.get("import_price")
 
                 # Calculate the transaction fee until the for loop ends
-                transaction_fee += item_buy_quantity * item_import_price
+                transaction_fee += item_import_quantity * item_import_price
 
                 # Update the item's stock and commit the change to the table
-                update_quantity_query = f"UPDATE inventory SET stock={current_item_stock[0] + item_buy_quantity} WHERE id={item_id};"
+                update_quantity_query = f"UPDATE inventory SET stock={current_item_stock[0] + item_import_quantity} WHERE id={item_id};"
                 db_cursor.execute(update_quantity_query)
                 db_connection.commit()
             

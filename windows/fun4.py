@@ -3,6 +3,7 @@ import tkinter.messagebox
 import tkinter.ttk
 import sqlite3
 
+#Export furniture
 class fun4:
     def __init__(self, master):
         self.master = master
@@ -92,7 +93,7 @@ class fun4:
                                 if int(self.furniture_amount) <= item_current_stock[0]:
                                     # Create a new dictionary and increment the item_index by 1
                                     new_item_dict = {}
-                                    new_item_dict.update({"id":item_data[0], "buy_quantity":int(self.furniture_amount), "export_price":item_data[4],"item_index":self.item_index})
+                                    new_item_dict.update({"id":item_data[0], "export_quantity":int(self.furniture_amount), "export_price":item_data[4],"item_index":self.item_index})
                                     self.item_index += 1
 
                                     # Add the item into the treeview according to the item_index and the 'cart'
@@ -106,16 +107,14 @@ class fun4:
                             else:
                                 # Iterate through the cart every time the user click the button if the cart is not empty
                                 for furniture in self.cart:
-                                    item_id = furniture.get("id")
-                                   
-                                        
+                                    item_id = furniture.get("id")           
                                     # Check if the user type in a new furniture ID
                                     if item_id != int(self.furniture_ID):
                                         # Check if the user's request can be satisfied with the current stock of a specific item
                                         if int(self.furniture_amount) <= item_current_stock[0]:
                                             # Create a new dictionary and increment the item_index by 1
                                             new_item_dict = {}
-                                            new_item_dict.update({"id":item_data[0], "buy_quantity":int(self.furniture_amount), "export_price":item_data[4], "item_index":self.item_index})
+                                            new_item_dict.update({"id":item_data[0], "export_quantity":int(self.furniture_amount), "export_price":item_data[4], "item_index":self.item_index})
                                             self.item_index += 1
 
                                             # Add the item into the treeview according to the item_index and the 'cart'
@@ -130,15 +129,15 @@ class fun4:
                                             break
                                     else: # And if they type in an ID from one of the items in the 'cart'...
                                         # Calculate the new amount of that item the user wanted to buy
-                                        current_buy_quantity = furniture.get("buy_quantity")
-                                        new_buy_quantity = current_buy_quantity + int(self.furniture_amount)
+                                        current_export_quantity = furniture.get("export_quantity")
+                                        new_export_quantity = current_export_quantity + int(self.furniture_amount)
 
-                                        # Then the item in the treeview should be updated with the new buy_quantity value,
-                                        # assuming that the new_buy_quantity <= item's current stock in inventory     
-                                        if new_buy_quantity <= item_current_stock[0]:                                  
+                                        # Then the item in the treeview should be updated with the new export_quantity value,
+                                        # assuming that the new_export_quantity <= item's current stock in inventory     
+                                        if new_export_quantity <= item_current_stock[0]:                                  
                                             x = self.tree.get_children()
-                                            self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_buy_quantity, item_data[3]))
-                                            furniture.update({"buy_quantity":new_buy_quantity})
+                                            self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_export_quantity, item_data[3]))
+                                            furniture.update({"export_quantity":new_export_quantity})
                                             break
                                         else:
                                             tkinter.messagebox.showerror(f"Cannot buy item {item_name[0]}", "There is not enough of that item to buy")
@@ -177,15 +176,15 @@ class fun4:
                 current_item_stock = db_cursor.execute(get_item_stock_query).fetchone()
 
                 # How many of that item does the user want to buy ?
-                item_buy_quantity = int(item.get("buy_quantity")) 
+                item_export_quantity = int(item.get("export_quantity")) 
                 # What is the export price of that item individually?
                 item_export_price = int(item.get("export_price")) 
 
                 # Calculate the transaction fee until the for loop ends
-                transaction_fee += item_buy_quantity * item_export_price
+                transaction_fee += item_export_quantity * item_export_price
 
                 # Update the item's stock and commit the change to the table
-                update_quantity_query = f"UPDATE inventory SET stock={current_item_stock[0] - item_buy_quantity} WHERE id={item_id};"
+                update_quantity_query = f"UPDATE inventory SET stock={current_item_stock[0] - item_export_quantity} WHERE id={item_id};"
                 db_cursor.execute(update_quantity_query)
                 db_connection.commit()
             

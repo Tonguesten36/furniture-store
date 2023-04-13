@@ -33,11 +33,11 @@ class fun2:
         self.tree.heading('Import price', text='Import price')
         self.tree.heading('Export price', text='Export price')
         self.tree.heading('Quantity', text='Quantity')
-        self.tree.place(x=40, y=40, height=500, width=860)
-        
+        self.tree.place(x=60, y=40, height=500, width=860)
+
         # Scrollbar
         self.scrollbar = Scrollbar(self.activeFrame, orient="vertical", command=self.tree.yview)
-        self.scrollbar.place(x=900, y=40, height=500)
+        self.scrollbar.place(x=920, y=40, height=500)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
         
         # Button for confirm searching a specific item
@@ -107,6 +107,26 @@ class fun2:
         for row in db_cursor.execute(list_all_query):
             self.tree.insert('', index, values=row)                
             index += 1
-
+        
         # Close the connection
         db_cursor.close()
+
+    
+    
+    
+
+
+
+    
+
+
+
+
+
+    
+
+  
+
+        
+
+    

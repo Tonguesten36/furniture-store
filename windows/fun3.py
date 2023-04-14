@@ -81,10 +81,6 @@ class fun3:
                         # Here, fetchone() is used to gather data of the row found after execute the SQLite command in search_item_query
                         item_data = db_cursor.fetchone()
 
-                         # Get the item's current stock in the inventory...
-                        get_item_stock_query = f"SELECT stock FROM inventory WHERE id={int(self.furniture_ID)};"
-                        item_current_stock = db_cursor.execute(get_item_stock_query).fetchone()
-
                         # ...and the item's name as well
                         get_item_name_query = f"SELECT name FROM inventory WHERE id={int(self.furniture_ID)}"
                         item_name = db_cursor.execute(get_item_name_query).fetchone()
@@ -136,7 +132,7 @@ class fun3:
                                         break
                                         
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
-                            tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {int(self.furniture_ID)}")
+                            tkinter.messagebox.showerror("Failed", f"Cannot find furniture {item_name[0]}")
                             self.ID.delete(0, END)
                     else:
                         tkinter.messagebox.showerror("Failed", "Cannot be a non-positive value")

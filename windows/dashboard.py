@@ -51,14 +51,15 @@ class dashboard:
     def total_products(self):
         # Establish the connection to the database
         # and initialize a cursor object
-        db_connect = sqlite3.connect("store.db")
-        db_cursor = db_connect.cursor()
+        db_connection = sqlite3.connect("store.db")
+        db_cursor = db_connection.cursor()
 
         # Get the quantity of each item name in the inventory table
         select_item_quantity_query = "SELECT stock from inventory"
         db_cursor.execute(select_item_quantity_query)
         
-        # all_item_quantity return an iteration of tuples 
+        # the cursor object return an iterable of tuples with fetchall()
+        # and store them in all_item_quantity 
         # with quantity of each item name at the first index of each tuple
         all_item_quantity = db_cursor.fetchall()
         
@@ -74,9 +75,25 @@ class dashboard:
     def total_revenue(self):    
         tkinter.messagebox.showinfo("Total Revenue")
 
-    # TODO: show total categories
+    # Show total distinct categories
     def total_categories(self):
-        tkinter.messagebox.showinfo("Total Categories")
+        # Establish the connection to the database
+        # and initialize a cursor object
+        db_connection = sqlite3.connect("store.db")
+        db_cursor = db_connection.cursor()
+
+        # First, you get a list of unique category
+        get_distinct_category_query = "SELECT DISTINCT category FROM inventory"
+        db_cursor.execute(get_distinct_category_query)
+
+        # Like above, the cursor return an iterable of tuples
+        distinct_categories = db_cursor.fetchall()
+
+        # Since the total categories in the inventory only count distinct categories
+        # We would only need the size of distinct_categories for total_categories
+        total_categories = len(distinct_categories)
+
+        tkinter.messagebox.showinfo("Total Categories", f"Total categories in inventory is: {total_categories}")
     
     # TODO: show sold products
     def sold_products(self):

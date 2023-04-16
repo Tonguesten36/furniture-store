@@ -3,9 +3,12 @@ import tkinter as tk
 from tkcalendar import DateEntry
 from PIL import ImageTk, Image
 import tkinter.messagebox
+import datetime as dt
+
+# Data handling modules
 import sqlite3
 import os, pathlib
-
+import pickle
 
 class dashboard:
     def __init__(self, master):
@@ -47,7 +50,7 @@ class dashboard:
         self.categoryLabel = tk.Button(self.activeFrame, image=self.category_Resize, command=self.total_categories)
         self.categoryLabel.place(x=785, y=60)
 
-    # TODO: show total products
+    # Show total products
     def total_products(self):
         # Establish the connection to the database
         # and initialize a cursor object
@@ -95,10 +98,35 @@ class dashboard:
 
         tkinter.messagebox.showinfo("Total Categories", f"Total categories in inventory is: {total_categories}")
     
-    # TODO: show sold products
+    # TODO: show sold products (exports)
+   
+
+    # PSEUDOCODE (fr this time)
+
     def sold_products(self):
-        tkinter.messagebox.showinfo("Sold Products")
-    
+        # Unpickle the data
+        with open("./windows/dashboard_data/sold_item.pickle", "rb") as f:
+            transaction_list = []
+            sold_item = pickle.load(f)
+
+            # Append the data into a list
+            for i in sold_item:
+                print(i)
+                transaction_data = {}
+                transaction_data.update(
+                    {
+                        "id":i["id"],
+                        "item_name":i["item_name"],
+                        "export_quantity":i["export_quantity"], 
+                        "export_price":i["export_price"],
+                        "date":i["date"]
+                    }
+                )   
+                transaction_list.append(transaction_data)
+        
+        # List out all products in the list
+        tkinter.messagebox.showinfo("Sold Products", f"{transaction_list}")  
+
 
         
         

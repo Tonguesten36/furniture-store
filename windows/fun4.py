@@ -1,7 +1,15 @@
 from tkinter import *
 import tkinter.messagebox
 import tkinter.ttk
+
+import datetime as dt
+
+# Data handling modules
 import sqlite3
+import pickle
+import tarfile as tar
+import os
+
 
 #Export furniture
 class fun4:
@@ -80,7 +88,7 @@ class fun4:
                     if int(self.furniture_amount) > 0:
                         # Here, fetchone() is used to gather data of the row found after execute the SQLite command in search_item_query
                         item_data = db_cursor.fetchone()
-                         # Get the item's current stock in the inventory...
+                        # Get the item's current stock in the inventory...
                         get_item_stock_query = f"SELECT stock FROM inventory WHERE id={int(self.furniture_ID)};"
                         item_current_stock = db_cursor.execute(get_item_stock_query).fetchone()
                         # ...and the item's name as well
@@ -93,7 +101,16 @@ class fun4:
                                 if int(self.furniture_amount) <= item_current_stock[0]:
                                     # Create a new dictionary and increment the item_index by 1
                                     new_item_dict = {}
-                                    new_item_dict.update({"id":item_data[0], "export_quantity":int(self.furniture_amount), "export_price":item_data[4],"item_index":self.item_index})
+                                    new_item_dict.update(
+                                        {
+                                            "id":item_data[0],
+                                            "export_quantity":int(self.furniture_amount), 
+                                            "export_price":item_data[4],
+                                            "item_index":self.item_index,
+                                            "item_name":item_name[0],
+                                            "date":dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-7]
+                                        }
+                                    )
                                     self.item_index += 1
 
                                     # Add the item into the treeview according to the item_index and the 'cart'
@@ -114,7 +131,16 @@ class fun4:
                                         if int(self.furniture_amount) <= item_current_stock[0]:
                                             # Create a new dictionary and increment the item_index by 1
                                             new_item_dict = {}
-                                            new_item_dict.update({"id":item_data[0], "export_quantity":int(self.furniture_amount), "export_price":item_data[4], "item_index":self.item_index})
+                                            new_item_dict.update(
+                                                {
+                                                    "id":item_data[0],
+                                                    "export_quantity":int(self.furniture_amount), 
+                                                    "export_price":item_data[4],
+                                                    "item_index":self.item_index,
+                                                    "item_name":item_name[0],
+                                                    "date":dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-7]
+                                                }
+                                            )
                                             self.item_index += 1
 
                                             # Add the item into the treeview according to the item_index and the 'cart'
@@ -157,7 +183,7 @@ class fun4:
         else:
             tkinter.messagebox.showerror("Error", "Please input furniture ID")
     
-    # Manage the export and import of the furniture
+    # Manage the export of the furniture
     def export_furniture(self, *args,**kwargs):
         # Establish connection to database
         db_connection = sqlite3.connect("store.db")
@@ -186,18 +212,30 @@ class fun4:
                 # Update the item's stock and commit the change to the table
                 update_quantity_query = f"UPDATE inventory SET stock={current_item_stock[0] - item_export_quantity} WHERE id={item_id};"
                 db_cursor.execute(update_quantity_query)
-                db_connection.commit()
+                db_connection.commit()              
             
             # Close the connection to database
             db_cursor.close()
             
             # Let the user know how much the transaction costs
             tkinter.messagebox.showinfo("Success", f"Total cost of the transaction is: {transaction_fee}")
+
+            # TAdd the transaction data to the sold_item file and then pickle it
+            if os.path.exists("./windows/dashboard_data/sold_item.pickle") == False:
+                # Do this if sold_item.pickle does not exist
+                with open("./windows/dashboard_data/sold_item.pickle", "xb") as f:
+                    pickle.dump(self.cart, f)
+            else:
+                # Do this if sold_item.pickle exists
+                with open("./windows/dashboard_data/sold_item.pickle", "ab") as f:
+                    pickle.dump(self.cart, f)       
+
             # Clean up the cart, treeview; and reset item_index to 0
             self.cart.clear()
             for item in self.tree.get_children():
                 self.tree.delete(item)
                 self.item_index = 0
+            
         else:
             tkinter.messagebox.showerror("Failed", "The cart is empty")
             db_cursor.close()            

@@ -26,28 +26,32 @@ class dashboard:
         self.total_Resize = ImageTk.PhotoImage(self.total_Resize)
         self.totalLabel = tk.Button(self.activeFrame, image=self.total_Resize, command=self.total_products)
         self.totalLabel.place(x=35, y=60)
-        
+        self.totalFont = tk.Label(self.activeFrame, text="Total Products", font=("Times New Roman", 15), bg="#009966", fg="#FFFF33")
+        self.totalFont.place(x=85, y=270)
         # sold products
         self.sold = Image.open("./images/sold.jpg")
         self.sold_Resize = self.sold.resize((200, 200), Image.ANTIALIAS)
         self.sold_Resize = ImageTk.PhotoImage(self.sold_Resize)
         self.soldLabel = tk.Button(self.activeFrame, image=self.sold_Resize, command=self.sold_products)
         self.soldLabel.place(x=285, y=60)
-
+        self.soldFont = tk.Label(self.activeFrame, text="Sold Products", font=("Times New Roman", 15), bg="#009966", fg="#FFFF33")
+        self.soldFont.place(x=335, y=270)
         # total revenue
         self.revenue = Image.open("./images/revenue.jpg")
         self.revenue_Resize = self.revenue.resize((200, 200), Image.ANTIALIAS)
         self.revenue_Resize = ImageTk.PhotoImage(self.revenue_Resize)
         self.revenueLabel = tk.Button(self.activeFrame, image=self.revenue_Resize, command=self.total_revenue)
         self.revenueLabel.place(x=535, y=60)
-
+        self.revenueFont = tk.Label(self.activeFrame, text="Total Revenue", font=("Times New Roman", 15), bg="#009966", fg="#FFFF33")
+        self.revenueFont.place(x=585, y=270)
         # total categories
         self.category = Image.open("./images/category.jpg")
         self.category_Resize = self.category.resize((200, 200), Image.ANTIALIAS)
         self.category_Resize = ImageTk.PhotoImage(self.category_Resize)
         self.categoryLabel = tk.Button(self.activeFrame, image=self.category_Resize, command=self.total_categories)
         self.categoryLabel.place(x=785, y=60)
-
+        self.categoryFont = tk.Label(self.activeFrame, text="Total Categories", font=("Times New Roman", 15), bg="#009966", fg="#FFFF33")
+        self.categoryFont.place(x=835, y=270)
     # Show total products
     def total_products(self):
         # Establish the connection to the database

@@ -4,6 +4,10 @@ from PIL import ImageTk, Image
 import tkinter.messagebox
 import sqlite3
 
+# Module used for storing data in a binary file
+# Also, I'm Pickle Rick
+import pickle
+
 class dashboard:
     def __init__(self, master):
         self.master = master
@@ -68,9 +72,24 @@ class dashboard:
 
         tkinter.messagebox.showinfo("Total Products", f"Total Products in the inventory is: {products}")
     
-    # TODO: show total revenue
-    def total_revenue(self):    
-        tkinter.messagebox.showinfo("Total Revenue")
+    # Show total revenue
+    # The total revenue will be stored inside a binary file
+    def total_revenue(self):
+        # Reset the total_revenue to 0
+        # f = open("./windows/dashboard_data/total_revenue.pickle", "wb")
+        # pickle.dump(0, f)
+        # f.close()
+        # tkinter.messagebox.showinfo("Total Revenue", "Total revenue has been reset to 0")
+
+        # Open the binary file and read the data
+        f = open("./windows/dashboard_data/total_revenue.pickle", "rb")
+
+        # Load the data into a temporary variable
+        pickle_file = pickle.load(f)
+
+        # Display the result and then close the file
+        tkinter.messagebox.showinfo("Total Revenue", f"Total Revenue is: {pickle_file}")
+        f.close()
 
     # Show total distinct categories
     def total_categories(self):

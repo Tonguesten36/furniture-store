@@ -90,7 +90,14 @@ class fun3:
                             if len(self.cart) == 0:                
                                 # Create a new dictionary and increment the item_index by 1
                                 new_item_dict = {}
-                                new_item_dict.update({"id":item_data[0], "import_quantity":int(self.furniture_amount), "import_price":item_data[4],"item_index":self.item_index})
+                                new_item_dict.update(
+                                    {
+                                        "id":item_data[0],
+                                        "import_quantity":int(self.furniture_amount), 
+                                        "import_price":item_data[4],
+                                        "item_index":self.item_index
+                                    }
+                                )
                                 self.item_index += 1
 
                                 # Add the item into the treeview according to the item_index and the 'cart'
@@ -108,7 +115,14 @@ class fun3:
                                     if item_id != int(self.furniture_ID):
                                         # Create a new dictionary and increment the item_index by 1
                                         new_item_dict = {}
-                                        new_item_dict.update({"id":item_data[0], "import_quantity":int(self.furniture_amount), "import_price":item_data[4], "item_index":self.item_index})
+                                        new_item_dict.update(
+                                            {
+                                                "id":item_data[0], 
+                                                "import_quantity":int(self.furniture_amount), 
+                                                "import_price":item_data[4], 
+                                                "item_index":self.item_index
+                                            }
+                                        )
                                         self.item_index += 1
 
                                         # Add the item into the treeview according to the item_index and the 'cart'
@@ -118,18 +132,8 @@ class fun3:
                                         # Let the user know that the item is added into the 'cart'
                                         tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
                                         break
-
                                     else: # And if they type in an ID from one of the items in the 'cart'...
-                                        # Calculate the new amount of that item the user wanted to buy
-                                        current_import_quantity = furniture.get("import_quantity")                                        
-                                        new_import_quantity = current_import_quantity + int(self.furniture_amount)
-
-                                        # Then the item in the treeview should be updated with the new buy_quantity value,
-                                        # assuming that the new_buy_quantity <= item's current stock in inventory     
-                                        x = self.tree.get_children()
-                                        self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_import_quantity, item_data[3]))
-                                        furniture.update({"import_quantity":new_import_quantity})
-                                        break
+                                        tkinter.messagebox.showerror("Failed", "Cannot input in the same ID more than once")
                                         
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
                             tkinter.messagebox.showerror("Failed", f"Cannot find furniture {item_name[0]}")

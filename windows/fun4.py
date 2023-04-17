@@ -147,20 +147,8 @@ class fun4:
                                             tkinter.messagebox.showerror(f"Cannot buy item {item_name[0]}", "There is not enough of that item to buy")
                                             break
                                     else: # And if they type in an ID from one of the items in the 'cart'...
-                                        # Calculate the new amount of that item the user wanted to buy
-                                        current_export_quantity = furniture.get("export_quantity")
-                                        new_export_quantity = current_export_quantity + int(self.furniture_amount)
-
-                                        # Then the item in the treeview should be updated with the new export_quantity value,
-                                        # assuming that the new_export_quantity <= item's current stock in inventory     
-                                        if new_export_quantity <= item_current_stock[0]:                                  
-                                            x = self.tree.get_children()
-                                            self.tree.item(x, values=(item_data[0], item_data[1], item_data[4], new_export_quantity, item_data[3]))
-                                            furniture.update({"export_quantity":new_export_quantity})
-                                            break
-                                        else:
-                                            tkinter.messagebox.showerror(f"Cannot buy item {item_name[0]}", "There is not enough of that item to buy")
-                                            break
+                                        tkinter.messagebox.showerror("Failed", "Cannot input in the same ID more than once")
+                                        
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
                             tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {int(self.furniture_ID)}")
                             self.ID.delete(0, END)

@@ -116,38 +116,40 @@ class fun4:
                                     tkinter.messagebox.showerror("Failed", f"Cannot add {item_name[0]} to cart because the amount is more than the current stock")
                             else:
                                 # Iterate through the cart every time the user click the button if the cart is not empty
+                                # Check the whole list first
+                                # If there is an item with the same id, then cancel
+                                is_same_id = False
                                 for furniture in self.cart:
-                                    item_id = furniture.get("id")           
-                                    # Check if the user type in a new furniture ID
-                                    if item_id != int(self.furniture_ID):
-                                        # Check if the user's request can be satisfied with the current stock of a specific item
-                                        if int(self.furniture_amount) <= item_current_stock[0]:
-                                            # Create a new dictionary and increment the item_index by 1
-                                            new_item_dict = {}
-                                            new_item_dict.update(
-                                                {
-                                                    "id":item_data[0],
-                                                    "export_quantity":int(self.furniture_amount), 
-                                                    "export_price":item_data[4],
-                                                    "item_index":self.item_index,
-                                                    "item_name":item_name[0],
-                                                    "date":dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-7]
-                                                }
-                                            )
-                                            self.item_index += 1
-
-                                            # Add the item into the treeview according to the item_index and the 'cart'
-                                            self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], self.furniture_amount, item_data[3]))
-                                            self.cart.append(new_item_dict)
-                                            
-                                            # Let the user know that the item is added into the 'cart'
-                                            tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
-                                            break
-                                        else:
-                                            tkinter.messagebox.showerror(f"Cannot buy item {item_name[0]}", "There is not enough of that item to buy")
-                                            break
-                                    else: # And if they type in an ID from one of the items in the 'cart'...
+                                    item_id = furniture.get("id")
+                                        
+                                    # Check if the user type in the same furniture ID
+                                    if item_id == int(self.furniture_ID):
                                         tkinter.messagebox.showerror("Failed", "Cannot input in the same ID more than once")
+                                        is_same_id = True
+                                        break
+                                
+                                # If we got to the end without any coindidental id, we add the item to the cart
+                                if is_same_id == False:
+                                    # Create a new dictionary and increment the item_index by 1
+                                    new_item_dict = {}
+                                    new_item_dict.update(
+                                        {
+                                            "id":item_data[0],
+                                            "export_quantity":int(self.furniture_amount), 
+                                            "export_price":item_data[4],
+                                            "item_index":self.item_index,
+                                            "item_name":item_name[0],
+                                            "date":dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-7]
+                                        }
+                                    )
+                                    self.item_index += 1
+
+                                    # Add the item into the treeview according to the item_index and the 'cart'
+                                    self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], self.furniture_amount, item_data[3]))
+                                    self.cart.append(new_item_dict)
+                                    
+                                    # Let the user know that the item is added into the 'cart'
+                                    tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
                                         
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
                             tkinter.messagebox.showerror("Failed", f"Cannot find furniture with the ID {int(self.furniture_ID)}")

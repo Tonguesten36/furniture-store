@@ -1,14 +1,8 @@
 from tkinter import *
 import tkinter as tk
-from tkcalendar import DateEntry
 from PIL import ImageTk, Image
 import tkinter.messagebox
-import datetime as dt
-
-# Data handling modules
 import sqlite3
-import os, pathlib
-import pickle
 
 class dashboard:
     def __init__(self, master):
@@ -98,32 +92,32 @@ class dashboard:
 
         tkinter.messagebox.showinfo("Total Categories", f"Total categories in inventory is: {total_categories}")
     
-    # TODO: show sold products (exports)
-   
-
-    # PSEUDOCODE (fr this time)
-
+    # Show sold products (exports)
     def sold_products(self):
-        # Unpickle the data
-        with open("./windows/dashboard_data/sold_item.pickle", "rb") as f:
-            transaction_list = []
-            sold_item = pickle.load(f)
+        transaction_list = []
 
-            # Append the data into a list
-            for i in sold_item:
-                print(i)
-                transaction_data = {}
-                transaction_data.update(
-                    {
-                        "id":i["id"],
-                        "item_name":i["item_name"],
-                        "export_quantity":i["export_quantity"], 
-                        "export_price":i["export_price"],
-                        "date":i["date"]
-                    }
-                )   
-                transaction_list.append(transaction_data)
-        
+        # Open the .txt file and read the data
+        f = open("./windows/dashboard_data/sold_item.txt", "r")
+        sold_item = f.readlines()
+        f.close()
+
+        # Append the data into the transaction_list
+        for i in sold_item:
+            print(i)
+            transaction_data = {}
+            splitted = i.split(",")
+            transaction_data.update(
+                {
+                    "id":splitted[0],
+                    "item_name":splitted[1],
+                    "export_quantity":splitted[2], 
+                    "export_price":splitted[3],
+                    "date":splitted[4].removesuffix("\n")
+                }
+            )   
+            print(transaction_data)
+            transaction_list.append(transaction_data)
+
         # List out all products in the list
         tkinter.messagebox.showinfo("Sold Products", f"{transaction_list}")  
 

@@ -4,6 +4,10 @@ import tkinter.ttk
 import datetime as dt
 import sqlite3
 
+# Module used for storing data in a binary file
+# Also, I'm Pickle Rick
+import pickle
+
 #Export furniture
 class fun4:
     def __init__(self, master):
@@ -202,6 +206,16 @@ class fun4:
             
             # Let the user know how much the transaction costs
             tkinter.messagebox.showinfo("Success", f"Total cost of the transaction is: {transaction_fee}")
+
+            # Update the total revenue in the total_revenue.pickle file
+            # Get the current total_revenue first
+            # Then increment it by the transaction_fee
+            # Then save the new total_revenue into the file
+            with open("./windows/dashboard_data/total_revenue.pickle", "rb") as total_revenue_file:
+                current_total_revenue_value = pickle.load(total_revenue_file)
+            new_total_revenue_value = current_total_revenue_value + transaction_fee
+            with open("./windows/dashboard_data/total_revenue.pickle", "wb") as total_revenue_file:
+                pickle.dump(new_total_revenue_value, total_revenue_file)
 
             # Save the transaction data into a text file
             sold_item_data = open("./windows/dashboard_data/sold_item.txt", "a")

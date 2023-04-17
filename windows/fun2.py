@@ -14,8 +14,8 @@ class fun2:
     
     # GUI function
     def fun2_gui(self):
-        self.activeFrame = Frame(self.master, bg="#009966", height=800, width=2000) 
-        self.activeFrame.pack(side=TOP, fill = Y)
+        self.activeFrame = Frame(self.master, bg="#009966", height=800, width=2000)
+        self.activeFrame.pack(side=TOP, fill=Y)
 
         # Treeview take information from database
         self.tree = Treeview(self.activeFrame, columns=('ID', 'Name', 'Import date', 'Category', 'Import price', 'Export price', 'Quantity'), show='headings')
@@ -26,34 +26,35 @@ class fun2:
         self.tree.column('Import price', width=10)
         self.tree.column('Export price', width=10)
         self.tree.column('Quantity', width=10)
-        self.tree.heading('ID', text='ID')
-        self.tree.heading('Name', text='Name')
-        self.tree.heading('Import date', text='Import date')
-        self.tree.heading('Category', text='Category')
-        self.tree.heading('Import price', text='Import price')
-        self.tree.heading('Export price', text='Export price')
-        self.tree.heading('Quantity', text='Quantity')
+        self.tree.heading('ID', text='ID', command=lambda: self.sort_treeview_column(self.tree, 'ID', False))
+        self.tree.heading('Name', text='Name', command=lambda: self.sort_treeview_column(self.tree, 'Name', False))
+        self.tree.heading('Import date', text='Import date', command=lambda: self.sort_treeview_column(self.tree, 'Import date', False))
+        self.tree.heading('Category', text='Category', command=lambda: self.sort_treeview_column(self.tree, 'Category', False))
+        self.tree.heading('Import price', text='Import price', command=lambda: self.sort_treeview_column(self.tree, 'Import price', False))
+        self.tree.heading('Export price', text='Export price', command=lambda: self.sort_treeview_column(self.tree, 'Export price', False))
+        self.tree.heading('Quantity', text='Quantity', command=lambda: self.sort_treeview_column(self.tree, 'Quantity', False))
         self.tree.place(x=60, y=40, height=500, width=860)
 
         # Scrollbar
         self.scrollbar = Scrollbar(self.activeFrame, orient="vertical", command=self.tree.yview)
         self.scrollbar.place(x=920, y=40, height=500)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
-        
+
         # Button for confirm searching a specific item
         self.btn = Button(self.activeFrame, text="Search",bg="#EE0000", fg="white", font=("Times New Roman", 20), command=self.search_ID)
         self.btn.place(x=560, y=580, height=30, width=200)
-        
+
         # Entry for searching a specific item
         self.entry = Entry(self.activeFrame, width=70, font=("Times New Roman", 20), borderwidth=2, relief="groove")
         self.entry.place(x=290, y=580, height=30, width=200)
-        
+
         # Label
         self.label = Label(self.activeFrame, text="Input furniture ID:",bg="#009966", fg="#FFFF33", font=("Times New Roman", 20))
         self.label.place(x=80, y=580, height=30, width=200)
-        
+
         # List all item in the database
         self.list_item()
+        
         
     #Search for a specific item
     def search_ID(self, *args,**kwargs):
@@ -96,6 +97,7 @@ class fun2:
                 self.entry.delete(0, END)
 
     # List all items inside the database
+    
     def list_item(self):
         # Initialize connection to the database
         db_connection = sqlite3.connect("store.db")
@@ -105,28 +107,31 @@ class fun2:
         list_all_query = "SELECT * FROM inventory"
         index = 0
         for row in db_cursor.execute(list_all_query):
-            self.tree.insert('', index, values=row)                
+            self.tree.insert('', index, values=row)
             index += 1
-        
+
         # Close the connection
         db_cursor.close()
 
-    
-    
-    
+    def sort_treeview_column(self, treeview, col, reverse):
+        l = [(self.get_column_value(treeview, k, col), k) for k in treeview.get_children('')]
+        l.sort(key=lambda x: x[0], reverse=reverse)
 
+        for index, (val, k) in enumerate(l):
+            treeview.move(k, '', index)
 
+        # Reset sorting order of all columns
+        for column in treeview['columns']:
+            treeview.heading(column, command=lambda col=column: self.sort_treeview_column(treeview, col, not reverse))
 
-    
+        # Update sorting order for current column
+        treeview.heading(col, command=lambda: self.sort_treeview_column(treeview, col, not reverse))
 
-
-
-
-
-    
-
-  
-
-        
-
-    
+    def get_column_value(self, treeview, item, column):
+        value = treeview.set(item, column)
+        # Convert import and export prices to float, and quantity to int
+        if column in ['Import price', 'Export price']:
+            value = float(value)
+        elif column in ['Quantity', 'ID']:
+            value = int(value)
+        return value

@@ -108,33 +108,39 @@ class fun3:
                                 tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
                             else:
                                 # Iterate through the cart every time the user click the button if the cart is not empty
+                                # Check the whole list first
+                                # If there is an item with the same id, then cancel
+                                is_same_id = False
                                 for furniture in self.cart:
                                     item_id = furniture.get("id")
                                         
-                                    # Check if the user type in a new furniture ID
-                                    if item_id != int(self.furniture_ID):
-                                        # Create a new dictionary and increment the item_index by 1
-                                        new_item_dict = {}
-                                        new_item_dict.update(
-                                            {
-                                                "id":item_data[0], 
-                                                "import_quantity":int(self.furniture_amount), 
-                                                "import_price":item_data[4], 
-                                                "item_index":self.item_index
-                                            }
-                                        )
-                                        self.item_index += 1
-
-                                        # Add the item into the treeview according to the item_index and the 'cart'
-                                        self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], self.furniture_amount, item_data[3]))
-                                        self.cart.append(new_item_dict)
-                                        
-                                        # Let the user know that the item is added into the 'cart'
-                                        tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
-                                        break
-                                    else: # And if they type in an ID from one of the items in the 'cart'...
+                                    # Check if the user type in the same furniture ID
+                                    if item_id == int(self.furniture_ID):
                                         tkinter.messagebox.showerror("Failed", "Cannot input in the same ID more than once")
-                                        
+                                        is_same_id = True
+                                        break
+                                
+                                # If we got to the end without any coindidental id, we add the item to the cart
+                                if is_same_id == False:
+                                    # Create a new dictionary and increment the item_index by 1
+                                    new_item_dict = {}
+                                    new_item_dict.update(
+                                        {
+                                            "id":item_data[0], 
+                                            "import_quantity":int(self.furniture_amount), 
+                                            "import_price":item_data[4], 
+                                            "item_index":self.item_index
+                                        }
+                                    )
+                                    self.item_index += 1
+
+                                    # Add the item into the treeview according to the item_index and the 'cart'
+                                    self.tree.insert('', self.item_index, values=(item_data[0], item_data[1], item_data[4], self.furniture_amount, item_data[3]))
+                                    self.cart.append(new_item_dict)
+                                    
+                                    # Let the user know that the item is added into the 'cart'
+                                    tkinter.messagebox.showinfo("Success", "Furniture added to cart successfully")
+
                         else: # if the item is not in inventory, tell the user that the item does not exist in the table 
                             tkinter.messagebox.showerror("Failed", f"Cannot find furniture {item_name[0]}")
                             self.ID.delete(0, END)

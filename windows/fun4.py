@@ -1,15 +1,8 @@
 from tkinter import *
 import tkinter.messagebox
 import tkinter.ttk
-
 import datetime as dt
-
-# Data handling modules
 import sqlite3
-import pickle
-import tarfile as tar
-import os
-
 
 #Export furniture
 class fun4:
@@ -220,15 +213,11 @@ class fun4:
             # Let the user know how much the transaction costs
             tkinter.messagebox.showinfo("Success", f"Total cost of the transaction is: {transaction_fee}")
 
-            # TAdd the transaction data to the sold_item file and then pickle it
-            if os.path.exists("./windows/dashboard_data/sold_item.pickle") == False:
-                # Do this if sold_item.pickle does not exist
-                with open("./windows/dashboard_data/sold_item.pickle", "xb") as f:
-                    pickle.dump(self.cart, f)
-            else:
-                # Do this if sold_item.pickle exists
-                with open("./windows/dashboard_data/sold_item.pickle", "ab") as f:
-                    pickle.dump(self.cart, f)       
+            # Save the transaction data into a text file
+            sold_item_data = open("./windows/dashboard_data/sold_item.txt", "a")
+            for item in self.cart:
+                sold_item_data.write(f"{item.get('id')},{item.get('item_name')},{item.get('export_quantity')},{item.get('export_price')},{item.get('date')}\n")
+            sold_item_data.close()
 
             # Clean up the cart, treeview; and reset item_index to 0
             self.cart.clear()

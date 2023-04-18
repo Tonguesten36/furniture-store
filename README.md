@@ -8,7 +8,7 @@ A Python program that manages the inventory of a furniture store.
 
 # Requirements
 - Python 3.10+
-- Dependencies: 'sqlite3', 'tkcalendar', 'PIL'
+- Dependencies: `sqlite3`, `tkcalendar`, `PIL`
 
 # How long did we do this project?
 3 weeks. That's how long it takes.

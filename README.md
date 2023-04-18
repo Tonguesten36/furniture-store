@@ -2,17 +2,21 @@
 A Python program that manages the inventory of a furniture store.
 
 # Group Members
-Tạ Quang Sáng (leader) <br/>
-Nguyễn Hoàng Tùng <br/>
-Nguyễn Minh Tùng <br/>
+- Tạ Quang Sáng  (leader) - BI12-382 - https://github.com/TaQuangSang69
+- Nguyễn Hoàng Tùng - BI12-475 - https://github.com/Tonguesten36
+- Nguyễn Minh Tùng - BI12-483 - https://github.com/MTuchiha
+
+# Requirements
+- Python 3.10+
+- Dependencies: 'sqlite3', 'tkcalendar', 'PIL'
 
 # How long did we do this project?
 3 weeks. That's how long it takes.
 
 # Who did what?
-UI: Tạ Quang Sáng, Nguyễn Minh Tùng <br/>
-Database: Nguyễn Minh Tùng <br/>
-Back-end: Nguyễn Hoàng Tùng <br/>
+- UI: Tạ Quang Sáng, Nguyễn Minh Tùng
+- Database: Nguyễn Minh Tùng
+- Back-end: Nguyễn Hoàng Tùng
 
 # Testing?
 We've made sure that you can't export more than the shop's current supply in the Export Furniture section.

@@ -142,9 +142,10 @@ class dashboard:
             transaction_list.append(transaction_data)
 
         # List out all products in the list
-        tkinter.messagebox.showinfo("Sold Products", f"{transaction_list}")  
+        output = '\n'.join(str(line) for line in transaction_list)
+        tkinter.messagebox.showinfo("Sold Products", f"{output}")  
 
-
+    # Show total products in the inventory
         
         
        

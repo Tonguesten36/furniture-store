@@ -23,3 +23,9 @@ We've made sure that you can't export more than the shop's current supply in the
 We've also made sure that illegal inputs are not accepted.
 However, the GUI has some problems. Namely, on some devices, some UI elements may not display themselves correctly.
 
+# How do we even run this?
+Make sure you have a Python Intepreter installed (3.10 or above), navigate to the project's folder and type in the command prompt
+
+<code>
+    python .\app.py
+</code>

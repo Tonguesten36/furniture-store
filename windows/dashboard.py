@@ -14,15 +14,15 @@ class dashboard:
         self.header = Label(self.master, text="DASHBOARD", bg="#009966", fg="#FFFF33", font=("Times New Roman", 20))
         self.header.pack(side=TOP, fill = BOTH)
         self.db_gui()
-    
+
     # GUI function
     def db_gui(self):
-        self.activeFrame = Frame(self.master, bg="#009966", height=800, width=2000) 
+        self.activeFrame = Frame(self.master, bg="#009966", height=800, width=2000)
         self.activeFrame.pack(side=TOP, fill = BOTH)
-        
+
         # total products
         self.total = Image.open("./images/total.jpg")
-        self.total_Resize = self.total.resize((200, 200), Image.ANTIALIAS)
+        self.total_Resize = self.total.resize((200, 200))
         self.total_Resize = ImageTk.PhotoImage(self.total_Resize)
         self.totalLabel = tk.Button(self.activeFrame, image=self.total_Resize, command=self.total_products)
         self.totalLabel.place(x=35, y=60)
@@ -30,7 +30,7 @@ class dashboard:
         self.totalFont.place(x=85, y=270)
         # sold products
         self.sold = Image.open("./images/sold.jpg")
-        self.sold_Resize = self.sold.resize((200, 200), Image.ANTIALIAS)
+        self.sold_Resize = self.sold.resize((200, 200))
         self.sold_Resize = ImageTk.PhotoImage(self.sold_Resize)
         self.soldLabel = tk.Button(self.activeFrame, image=self.sold_Resize, command=self.sold_products)
         self.soldLabel.place(x=285, y=60)
@@ -38,7 +38,7 @@ class dashboard:
         self.soldFont.place(x=335, y=270)
         # total revenue
         self.revenue = Image.open("./images/revenue.jpg")
-        self.revenue_Resize = self.revenue.resize((200, 200), Image.ANTIALIAS)
+        self.revenue_Resize = self.revenue.resize((200, 200))
         self.revenue_Resize = ImageTk.PhotoImage(self.revenue_Resize)
         self.revenueLabel = tk.Button(self.activeFrame, image=self.revenue_Resize, command=self.total_revenue)
         self.revenueLabel.place(x=535, y=60)
@@ -46,7 +46,7 @@ class dashboard:
         self.revenueFont.place(x=585, y=270)
         # total categories
         self.category = Image.open("./images/category.jpg")
-        self.category_Resize = self.category.resize((200, 200), Image.ANTIALIAS)
+        self.category_Resize = self.category.resize((200, 200))
         self.category_Resize = ImageTk.PhotoImage(self.category_Resize)
         self.categoryLabel = tk.Button(self.activeFrame, image=self.category_Resize, command=self.total_categories)
         self.categoryLabel.place(x=785, y=60)
@@ -62,12 +62,12 @@ class dashboard:
         # Get the quantity of each item name in the inventory table
         select_item_quantity_query = "SELECT stock from inventory"
         db_cursor.execute(select_item_quantity_query)
-        
+
         # the cursor object return an iterable of tuples with fetchall()
-        # and store them in all_item_quantity 
+        # and store them in all_item_quantity
         # with quantity of each item name at the first index of each tuple
         all_item_quantity = db_cursor.fetchall()
-        
+
         # Calculate the total products
         # i[0] is the quantity of an item
         products = 0
@@ -75,7 +75,7 @@ class dashboard:
             products += i[0]
 
         tkinter.messagebox.showinfo("Total Products", f"Total Products in the inventory is: {products}")
-    
+
     # Show total revenue
     # The total revenue will be stored inside a binary file
     def total_revenue(self):
@@ -114,7 +114,7 @@ class dashboard:
         total_categories = len(distinct_categories)
 
         tkinter.messagebox.showinfo("Total Categories", f"Total categories in inventory is: {total_categories}")
-    
+
     # Show sold products (exports)
     def sold_products(self):
         transaction_list = []
@@ -133,22 +133,22 @@ class dashboard:
                 {
                     "id":splitted[0],
                     "item_name":splitted[1],
-                    "export_quantity":splitted[2], 
+                    "export_quantity":splitted[2],
                     "export_price":splitted[3],
                     "date":splitted[4].removesuffix("\n")
                 }
-            )   
+            )
             print(transaction_data)
             transaction_list.append(transaction_data)
 
         # List out all products in the list
         output = '\n'.join(str(line) for line in transaction_list)
-        tkinter.messagebox.showinfo("Sold Products", f"{output}")  
+        tkinter.messagebox.showinfo("Sold Products", f"{output}")
 
     # Show total products in the inventory
-        
-        
-       
 
 
-        
+
+
+
+
